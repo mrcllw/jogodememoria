@@ -38,9 +38,9 @@ export default function Jogo({ navigation }) {
   }, [cartas]);
 
   useEffect(() => {
-    const selecionouDuasDeCartas = cartasSelecionadas.length == 2;
+    const selecionouDuasCartas = cartasSelecionadas.length == 2;
 
-    if (selecionouDuasDeCartas) {
+    if (selecionouDuasCartas) {
       const cartasSaoDiferente = !_.isEqual(
         cartas[cartasSelecionadas[0]],
         cartas[cartasSelecionadas[1]]
@@ -81,7 +81,7 @@ export default function Jogo({ navigation }) {
         {cartas.map(({ valor, verValor }, indice) => (
           <Carta
             key={indice}
-            isabled={verValor}
+            disabled={verValor}
             onPress={() => aoSelecionarCarta(indice)}
           >
             <Texto tamanho={20}>{verValor ? valor : "♠"}</Texto>

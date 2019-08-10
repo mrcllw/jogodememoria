@@ -20,6 +20,8 @@ export default function Inicio({ navigation }) {
         placeholder="Digite seu nome"
         placeholderTextColor="#999999"
         onChangeText={definirNome}
+        returnKeyType="done"
+        onSubmitEditing={aoPressionarBotao}
       />
       <Botao aoPressionar={aoPressionarBotao} texto="Começar" />
     </Container>
