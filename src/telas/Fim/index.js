@@ -4,7 +4,6 @@ import Titulo from "../../componentes/Titulo";
 import Texto from "../../componentes/Texto";
 import Botao from "../../componentes/Botao";
 import { Container, Ranking, ItemDaLista } from "./styles";
-import { tsPropertySignature } from "@babel/types";
 
 export default function Fim({ navigation }) {
   const rodadas = navigation.getParam("rodadas");
