@@ -12,15 +12,10 @@ export default function Jogo({ navigation }) {
   const [rodada, definirRodada] = useState(0);
 
   useEffect(() => {
-    const rodadaFim = rodada + 1;
-
     async function salvarDadosDoJogador(callback) {
       const nomeDoJogador = obterNomeDoJogador();
       const rank = await Armazenamento.obter("rank");
-      const novoRank = [
-        ...rank,
-        { jogador: nomeDoJogador, rodadas: rodadaFim }
-      ];
+      const novoRank = [...rank, { jogador: nomeDoJogador, rodadas: rodada }];
       const rankOrdenadoPorRodada = _.orderBy(novoRank, ["rodadas", "desc"]);
       await Armazenamento.guardar("rank", rankOrdenadoPorRodada);
       callback();
@@ -32,7 +27,7 @@ export default function Jogo({ navigation }) {
         definirCartas(obterCartas());
         definirCartasSelecionadas([]);
         definirRodada(0);
-        navigation.navigate("Fim", { rodadas: rodadaFim });
+        navigation.navigate("Fim", { rodadas: rodada });
       });
     }
   }, [cartas]);
@@ -41,10 +36,9 @@ export default function Jogo({ navigation }) {
     const selecionouDuasCartas = cartasSelecionadas.length == 2;
 
     if (selecionouDuasCartas) {
-      const cartasSaoDiferente = !_.isEqual(
-        cartas[cartasSelecionadas[0]],
-        cartas[cartasSelecionadas[1]]
-      );
+      const cartasSaoDiferente =
+        cartas[cartasSelecionadas[0]].valor !=
+        cartas[cartasSelecionadas[1]].valor;
 
       if (cartasSaoDiferente) {
         setTimeout(() => {
@@ -57,9 +51,18 @@ export default function Jogo({ navigation }) {
           );
         }, 200);
       }
+
       definirRodada(rodada + 1);
       definirCartasSelecionadas([]);
     }
+
+    definirCartas(
+      cartas.map((carta, indice) =>
+        cartasSelecionadas.includes(indice)
+          ? { ...carta, verValor: true }
+          : carta
+      )
+    );
   }, [cartasSelecionadas]);
 
   function obterNomeDoJogador() {
@@ -67,11 +70,6 @@ export default function Jogo({ navigation }) {
   }
 
   function aoSelecionarCarta(indiceDaCarta) {
-    definirCartas(
-      cartas.map((carta, indice) =>
-        indice === indiceDaCarta ? { ...carta, verValor: true } : carta
-      )
-    );
     definirCartasSelecionadas([...cartasSelecionadas, indiceDaCarta]);
   }
 
