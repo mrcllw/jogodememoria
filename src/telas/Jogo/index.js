@@ -42,13 +42,7 @@ export default function Jogo({ navigation }) {
 
       if (cartasSaoDiferente) {
         setTimeout(() => {
-          definirCartas(
-            cartas.map((carta, indice) =>
-              cartasSelecionadas.includes(indice)
-                ? { ...carta, verValor: false }
-                : carta
-            )
-          );
+          alterarVisibilidadeDaCarta(false);
         }, 200);
       }
 
@@ -56,14 +50,18 @@ export default function Jogo({ navigation }) {
       definirCartasSelecionadas([]);
     }
 
+    alterarVisibilidadeDaCarta(true);
+  }, [cartasSelecionadas]);
+
+  function alterarVisibilidadeDaCarta(estado) {
     definirCartas(
       cartas.map((carta, indice) =>
         cartasSelecionadas.includes(indice)
-          ? { ...carta, verValor: true }
+          ? { ...carta, verValor: estado }
           : carta
       )
     );
-  }, [cartasSelecionadas]);
+  }
 
   function obterNomeDoJogador() {
     return navigation.getParam("nomeDoJogador");
